@@ -1,47 +1,50 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  const formData= new FormData();
+  let input;
+  let urlimg="http://localhost:8080/users/download"
+  fetch(urlimg).then((response)=>{
+    response.text().then((yourByteArrayAsBase64)=>document.getElementById("ItemPreview").src = "data:image/png;base64," + yourByteArrayAsBase64)
+
+  })
+
+
+  function algo(){
+    let url="http://localhost:8080/users/upload"
+    for (const file of input.files) {
+      formData.append("file", file);
+      formData.append("id",1)
+      fetch(url, {
+        method: "post",
+        body: formData,
+      }).then((response)=>console.log(response)).catch((error) => console.log(error));
+    }
+
+
+
+
+
+
+
+  }
 </script>
 
 <main>
+  <h1>Multipart File Upload</h1>
+  <img id="ItemPreview" src="">
   <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+  <form method="POST" enctype="multipart/form-data"  on:submit|preventDefault={()=>algo()}>
+    <table>
+      <tr><td>File to upload:</td><td><input bind:this={input}  type="file" name="file" /></td></tr>
+      <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
 
-  <div class="card">
-    <Counter />
+    </table>
+  </form>
   </div>
 
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
 
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+  
 </style>

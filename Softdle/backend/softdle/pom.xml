@@ -38,7 +38,7 @@
 				<jdbcDriver.className>org.postgresql.Driver</jdbcDriver.className>
 
 				<!-- Datasource -->
-				<dataSource.baseUrl>jdbc:postgresql://localhost/sofdleproject</dataSource.baseUrl>
+				<dataSource.baseUrl>jdbc:postgresql://localhost:5431/sofdleproject</dataSource.baseUrl>
 				<dataSource.url>${dataSource.baseUrl}?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Europe/Madrid</dataSource.url>
 				<testDataSource.url>${dataSource.baseUrl}test?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Europe/Madrid</testDataSource.url>
 				<dataSource.createTablesScript>1-postgresqlCreateTables.sql</dataSource.createTablesScript>
@@ -83,9 +83,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-security</artifactId>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
@@ -98,6 +103,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.2.7.RELEASE</version>
 				<configuration>
 					<excludes>
 						<exclude>

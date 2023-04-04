@@ -24,12 +24,16 @@ spring:
     default-property-inclusion: NON_NULL
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
       show-sql: true
       format-sql: true
       use-sql-comments: true
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  http:
+    multipart:
+      max-request-size:10MB
+      max-file-size=10MB
 project:
   jwt:
     signKey: Bu:GW8bgPlEw
