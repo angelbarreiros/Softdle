@@ -21,16 +21,16 @@ public class UserService {
     public void addUser(User user){
         userDao.save(user);
     }
-    public void downloadFile(MultipartFile file,Long id) throws IOException {
-        if (!file.isEmpty()){
-            Optional<User> optionalUser=userDao.findById(id);
-            if (optionalUser.isPresent()){
-                Path path= Paths.get("/home/angel/Softdle/Softdle/backend/softdle/images/"+Math.random()+file.getOriginalFilename());
-                Files.copy(file.getInputStream(),path);
-                optionalUser.get().setImage(file.getOriginalFilename());
-            }
-        }
-
-
-    }
+//    public void downloadFile(MultipartFile file,Long id) throws IOException {
+//        if (!file.isEmpty()){
+//            Optional<User> optionalUser=userDao.findById(id);
+//            if (optionalUser.isPresent()){
+//                Path path= Paths.get("/home/angel/Softdle/Softdle/backend/softdle/images/"+Math.random()+file.getOriginalFilename());
+//                Files.copy(file.getInputStream(),path);
+//                optionalUser.get().setImage(file.getOriginalFilename());
+//            }
+//        }
+//
+//
+//    }
 }
