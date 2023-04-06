@@ -12,6 +12,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Table
+@EqualsAndHashCode
+@Builder
 @Entity
 public class Language {
     private enum TypingType {DINAMIC,STATIC}
@@ -23,6 +25,7 @@ public class Language {
     @SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence", allocationSize = 1)
     @Id
     private Long id;
+    @Column(unique = true,nullable = false)
     private String name;
     private TypingType typeType;
     private CompilingType compilingType;
@@ -32,9 +35,8 @@ public class Language {
     private String purpose;
     private  NumberOfJobs numberOfJobs;
     private String imagePath;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "winsId")
-    private User user;
+    @Column(unique = true,nullable = false)
+    private Boolean isTheOne;
 
 
 }

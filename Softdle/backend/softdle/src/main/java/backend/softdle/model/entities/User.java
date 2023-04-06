@@ -1,10 +1,7 @@
 package backend.softdle.model.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EqualsAndHashCode
 @Table(name="users")
 public class User implements UserDetails {
     public enum RoleType {USER,ADMIN}
@@ -25,8 +23,10 @@ public class User implements UserDetails {
     private Integer id;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String username;
     private String password;
+    private int streak;
     @Enumerated(EnumType.STRING)
     private RoleType role;
 

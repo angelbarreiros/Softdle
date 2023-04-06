@@ -36,5 +36,5 @@ spring:
       max-file-size=10MB
 project:
   jwt:
-    signKey: Bu:GW8bgPlEw
+    signKey: 68576D5A7134743777217A24432646294A404E635266556A586E327235753878
     expirationMinutes: 1440
