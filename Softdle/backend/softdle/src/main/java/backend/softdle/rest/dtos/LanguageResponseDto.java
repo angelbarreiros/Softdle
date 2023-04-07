@@ -1,6 +1,7 @@
-package backend.softdle.model.services;
+package backend.softdle.rest.dtos;
 
 
+import backend.softdle.model.services.LanguageResponse;
 import lombok.*;
 
 @NoArgsConstructor
@@ -9,16 +10,16 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode
-public class LanguageResponse {
-    public enum DateType {Less,More,Perfect}
+public class LanguageResponseDto {
+
     private Boolean isTheOne;
     private Boolean typeType;
     private Boolean compilingType;
-    private DateType date;
+    private LanguageResponse.DateType date;
     private Boolean creator;
     private Boolean paradigm;
     private Boolean purpose;
-    private DateType numberOfJobs;
+    private LanguageResponse.DateType numberOfJobs;
 
 
 }

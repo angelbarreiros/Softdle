@@ -21,7 +21,7 @@ public class WinsServiceImpl implements WinsService {
     private UserDao userDao;
     @Override
     public Block<Wins> winsHistory(String username, int page, int size) {
-        Slice<Wins> slice= winsDao.findAllByUserUsernameOrderByDate(username, PageRequest.of(page,size));
+        Slice<Wins> slice= winsDao.findAllByUserUsernameOrderByDateDesc(username, PageRequest.of(page,size));
         return new Block<>(slice.getContent(),slice.hasNext());
     }
     @Transactional

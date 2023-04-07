@@ -16,10 +16,9 @@ import java.time.LocalDate;
 @Builder
 @Entity
 public class Language {
-    private enum TypingType {DINAMIC,STATIC}
-    private enum CompilingType {COMPILED,INTERPRETED,BOTH}
-    private enum Paradigm {FUNCTIONAL,OOP,MULTIPARADIGM,IMPERACTIVE,PROCEDIMENTAL}
-    private enum NumberOfJobs {VERYLOW,LOW,AVERAGE,HIGH,VERYHIGH}
+    public enum TypingType {DINAMIC,STATIC}
+    public enum CompilingType {COMPILED,INTERPRETED,BOTH}
+    public enum Paradigm {FUNCTIONAL,OOP,MULTIPARADIGM,IMPERACTIVE,PROCEDIMENTAL}
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "id_sequence")
     @SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence", allocationSize = 1)
@@ -33,7 +32,7 @@ public class Language {
     private String creator;
     private Paradigm paradigm;
     private String purpose;
-    private  NumberOfJobs numberOfJobs;
+    private Integer numberOfJobs;
     private String imagePath;
     @Column(unique = true,nullable = false)
     private Boolean isTheOne;

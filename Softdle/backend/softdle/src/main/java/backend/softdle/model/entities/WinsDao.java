@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WinsDao extends PagingAndSortingRepository<Wins,Long>, CrudRepository<Wins,Long> {
-    Slice<Wins> findAllByUserUsernameOrderByDate(String username, Pageable pageable);
+    Slice<Wins> findAllByUserUsernameOrderByDateDesc(String username, Pageable pageable);
 }

@@ -3,18 +3,16 @@ package backend.softdle;
 import backend.softdle.model.entities.*;
 import backend.softdle.model.exceptions.LanguageNotFoundException;
 import backend.softdle.model.exceptions.UserAlreadyExistsException;
-import backend.softdle.model.services.AuthService;
-import backend.softdle.model.services.Block;
-import backend.softdle.model.services.LanguageService;
-import backend.softdle.model.services.WinsService;
+import backend.softdle.model.services.*;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -78,12 +76,40 @@ class SoftdleApplicationTests {
 	@Test
 	public void languageTest() throws LanguageNotFoundException {
 		assertThrows(LanguageNotFoundException.class,()->languageService.tryToFind(""));
-		Language language = Language.builder().name("python").imagePath("").isTheOne(true).build();
-		Language language2 = Language.builder().name("c").imagePath("").isTheOne(false).build();
+		Language language = Language.builder()
+				.name("python")
+				.imagePath("")
+				.isTheOne(true)
+				.numberOfJobs(100)
+				.compilingType(Language.CompilingType.COMPILED)
+				.purpose("dsadsa")
+				.date(LocalDate.now())
+				.paradigm(Language.Paradigm.FUNCTIONAL)
+				.typeType(Language.TypingType.DINAMIC)
+				.creator("dadsas")
+				.build();
+		Language language2 = Language.builder()
+				.name("c")
+				.imagePath("")
+				.isTheOne(false)
+				.numberOfJobs(100)
+				.compilingType(Language.CompilingType.COMPILED)
+				.creator("fdsads")
+				.paradigm(Language.Paradigm.MULTIPARADIGM)
+				.typeType(Language.TypingType.DINAMIC)
+				.date(LocalDate.now())
+				.purpose("adsadsadsa")
+				.build();
 		languageDao.save(language);
 		languageDao.save(language2);
-		assertEquals(language,languageService.tryToFind("python"));
-		assertEquals(language2,languageService.tryToFind("c"));
+		LanguageResponse languageResponse=new LanguageResponse(true,true,true, LanguageResponse.DateType.Perfect
+				,true,true,true, LanguageResponse.DateType.Perfect);
+		LanguageResponse languageResponse2=new LanguageResponse(false,true,true, LanguageResponse.DateType.Perfect
+				,false,false,false, LanguageResponse.DateType.Perfect);
+		assertEquals(languageService.tryToFind("python"),languageResponse);
+		assertEquals(languageService.tryToFind("c"),languageResponse2);
+
+
 
 	}
 

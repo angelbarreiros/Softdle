@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**")
-                .permitAll()
+                .permitAll().requestMatchers("/users/history").hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()
