@@ -24,3 +24,4 @@ public class Wins {
     @JoinColumn(name = "winsId")
     private User user;
 }
+

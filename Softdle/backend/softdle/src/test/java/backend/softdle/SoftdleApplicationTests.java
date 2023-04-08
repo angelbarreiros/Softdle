@@ -85,7 +85,7 @@ class SoftdleApplicationTests {
 				.purpose("dsadsa")
 				.date(LocalDate.now())
 				.paradigm(Language.Paradigm.FUNCTIONAL)
-				.typeType(Language.TypingType.DINAMIC)
+				.typeType(Language.TypingType.DYNAMIC)
 				.creator("dadsas")
 				.build();
 		Language language2 = Language.builder()
@@ -96,7 +96,7 @@ class SoftdleApplicationTests {
 				.compilingType(Language.CompilingType.COMPILED)
 				.creator("fdsads")
 				.paradigm(Language.Paradigm.MULTIPARADIGM)
-				.typeType(Language.TypingType.DINAMIC)
+				.typeType(Language.TypingType.DYNAMIC)
 				.date(LocalDate.now())
 				.purpose("adsadsadsa")
 				.build();

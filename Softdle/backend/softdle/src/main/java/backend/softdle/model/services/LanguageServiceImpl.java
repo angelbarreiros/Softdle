@@ -14,7 +14,7 @@ public class LanguageServiceImpl implements LanguageService {
     @Autowired
     private LanguageDao languageDao;
     public LanguageResponse tryToFind(String name) throws LanguageNotFoundException {
-        Language language=languageDao.findByIsTheOne(Boolean.TRUE);
+        Language language=languageDao.findByIsTheOne(true);
         Language trylanguage=languageDao.findByName(name).orElseThrow(()-> new LanguageNotFoundException(name));
         if (language.equals(trylanguage)){
             return new LanguageResponse(true,true,true, LanguageResponse.DateType.Perfect
@@ -40,13 +40,13 @@ public class LanguageServiceImpl implements LanguageService {
 
     private LanguageResponse compare(Language language, Language trylanguage){
         LanguageResponse languageResponse= new LanguageResponse();
-        if (trylanguage.getDate().isBefore(language.getDate())){
+        if (trylanguage.getDate()<(language.getDate())){
                 languageResponse.setDate(LanguageResponse.DateType.More);
         }
         else if (trylanguage.getDate().equals(language.getDate())){
             languageResponse.setDate(LanguageResponse.DateType.Perfect);
         }
-        else if ( (trylanguage.getDate().isAfter(language.getDate()))){
+        else {
             languageResponse.setDate(LanguageResponse.DateType.Less);
         }
         if (trylanguage.getNumberOfJobs()>language.getNumberOfJobs()){

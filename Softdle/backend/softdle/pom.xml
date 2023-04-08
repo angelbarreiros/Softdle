@@ -38,7 +38,7 @@
 				<jdbcDriver.className>org.postgresql.Driver</jdbcDriver.className>
 
 				<!-- Datasource -->
-				<dataSource.baseUrl>jdbc:postgresql://localhost:5431/sofdleproject</dataSource.baseUrl>
+				<dataSource.baseUrl>jdbc:postgresql://localhost:5432/sofdleproject</dataSource.baseUrl>
 				<dataSource.url>${dataSource.baseUrl}?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Europe/Madrid</dataSource.url>
 				<testDataSource.url>${dataSource.baseUrl}test?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Europe/Madrid</testDataSource.url>
 				<dataSource.createTablesScript>1-postgresqlCreateTables.sql</dataSource.createTablesScript>
