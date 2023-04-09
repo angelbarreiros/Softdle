@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class WinsServiceImpl implements WinsService {
@@ -29,13 +30,13 @@ public class WinsServiceImpl implements WinsService {
     public void addWin(String username, int nofattempts) {
         User user= userDao.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("not found"));
         user.setStreak(user.getStreak()+1);
-        Wins wins= Wins.builder().user(user).date(LocalDate.now()).numberOfAttempts(nofattempts).build();
+        Wins wins= Wins.builder().user(user).date(LocalDateTime.now()).numberOfAttempts(nofattempts).build();
         winsDao.save(wins);
     }
     public void addloose(String username, int nofattempts) {
         User user= userDao.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("not found"));
         user.setStreak(0);
-        Wins wins= Wins.builder().user(user).date(LocalDate.now()).numberOfAttempts(nofattempts).build();
+        Wins wins= Wins.builder().user(user).date(LocalDateTime.now()).numberOfAttempts(nofattempts).build();
         winsDao.save(wins);
     }
 

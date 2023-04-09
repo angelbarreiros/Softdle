@@ -20,8 +20,8 @@ public class Language {
     public enum CompilingType {COMPILED,INTERPRETED,BOTH,NO}
     public enum Paradigm {FUNCTIONAL,OOP,MULTIPARADIGM, IMPERATIVE,PROCEDURAL}
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "id_sequence")
-    @SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "language__id_seq")
+    @SequenceGenerator(name = "language__id_seq", sequenceName = "language__id_seq", allocationSize = 1)
     @Id
     private Long id;
     @Column(unique = true,nullable = false)
@@ -33,7 +33,6 @@ public class Language {
     private Integer date;
     private String creator;
     @Enumerated(EnumType.STRING)
-
     private Paradigm paradigm;
     private String purpose;
     private Integer numberOfJobs;

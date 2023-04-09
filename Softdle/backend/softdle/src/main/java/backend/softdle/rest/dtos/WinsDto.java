@@ -1,9 +1,7 @@
 package backend.softdle.rest.dtos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
-
-import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,6 +10,6 @@ import java.time.LocalDate;
 @Builder
 
 public class WinsDto {
-        private LocalDate date;
+        private Long date;
         private int numberOfAttempts;
 }

@@ -37,4 +37,4 @@ spring:
 project:
   jwt:
     signKey: 68576D5A7134743777217A24432646294A404E635266556A586E327235753878
-    expirationMinutes: 1440
+    expirationMinutes: 14400

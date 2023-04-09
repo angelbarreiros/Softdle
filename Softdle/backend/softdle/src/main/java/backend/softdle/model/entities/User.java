@@ -17,9 +17,10 @@ import java.util.List;
 @EqualsAndHashCode
 @Table(name="users")
 public class User implements UserDetails {
-    public enum RoleType {USER,ADMIN}
+
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "users_id_seq")
+    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     @Id
-    @GeneratedValue
     private Integer id;
     private String firstName;
     private String lastName;
@@ -27,6 +28,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private int streak;
+    public enum RoleType {USER,ADMIN}
     @Enumerated(EnumType.STRING)
     private RoleType role;
 

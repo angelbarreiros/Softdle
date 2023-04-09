@@ -7,14 +7,21 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
 public class LanguageServiceImpl implements LanguageService {
     @Autowired
     private LanguageDao languageDao;
+
+    @Override
+    public List<LanguageSelection> getNamesAndImages() {
+        return  languageDao.getNamesAndImages();
+    }
+
     public LanguageResponse tryToFind(String name) throws LanguageNotFoundException {
-        Language language=languageDao.findByIsTheOne(true);
+        Language language=languageDao.findByIsTheOne(true).orElseThrow(()-> new LanguageNotFoundException("Error , se ha liado la base de datos"));
         Language trylanguage=languageDao.findByName(name).orElseThrow(()-> new LanguageNotFoundException(name));
         if (language.equals(trylanguage)){
             return new LanguageResponse(true,true,true, LanguageResponse.DateType.Perfect
@@ -32,7 +39,7 @@ public class LanguageServiceImpl implements LanguageService {
         int low = 1;
         int high = 71;
         Long result = (long) (r.nextInt(high-low) + low);
-        Language language=languageDao.findByIsTheOne(Boolean.TRUE);
+        Language language=languageDao.findByIsTheOne(Boolean.TRUE).orElseThrow(()-> new LanguageNotFoundException("Error , se ha liado la base de datos"));
         language.setIsTheOne(false);
         Language insertLanguage=languageDao.findById(result).orElseThrow(() -> new LanguageNotFoundException("random number has failed"));
         insertLanguage.setIsTheOne(true);

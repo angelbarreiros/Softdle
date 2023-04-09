@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -48,10 +50,8 @@ public class AuthServiceImpl  implements AuthService{
                     .streak(0)
                     .role(User.RoleType.USER)
                     .build();
-            User use2r =userDao.save(user1);
-
             return JwtTokenDto.builder()
-                    .token(jwtService.generateToken(use2r))
+                    .token(jwtService.generateToken(user1))
                     .build();
         }
         throw new UserAlreadyExistsException();

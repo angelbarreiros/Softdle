@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import java.time.LocalDate;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
 @SpringBootTest
@@ -83,7 +84,7 @@ class SoftdleApplicationTests {
 				.numberOfJobs(100)
 				.compilingType(Language.CompilingType.COMPILED)
 				.purpose("dsadsa")
-				.date(LocalDate.now())
+				.date(1990)
 				.paradigm(Language.Paradigm.FUNCTIONAL)
 				.typeType(Language.TypingType.DYNAMIC)
 				.creator("dadsas")
@@ -97,7 +98,7 @@ class SoftdleApplicationTests {
 				.creator("fdsads")
 				.paradigm(Language.Paradigm.MULTIPARADIGM)
 				.typeType(Language.TypingType.DYNAMIC)
-				.date(LocalDate.now())
+				.date(1990)
 				.purpose("adsadsadsa")
 				.build();
 		languageDao.save(language);
@@ -110,7 +111,41 @@ class SoftdleApplicationTests {
 		assertEquals(languageService.tryToFind("c"),languageResponse2);
 
 
+	}
 
+	@Test
+	void getNamesAndImagesTest(){
+		Language language = Language.builder()
+				.name("python")
+				.imagePath("")
+				.isTheOne(true)
+				.numberOfJobs(100)
+				.compilingType(Language.CompilingType.COMPILED)
+				.purpose("dsadsa")
+				.date(1990)
+				.paradigm(Language.Paradigm.FUNCTIONAL)
+				.typeType(Language.TypingType.DYNAMIC)
+				.creator("dadsas")
+				.build();
+		Language language2 = Language.builder()
+				.name("c")
+				.imagePath("")
+				.isTheOne(false)
+				.numberOfJobs(100)
+				.compilingType(Language.CompilingType.COMPILED)
+				.creator("fdsads")
+				.paradigm(Language.Paradigm.MULTIPARADIGM)
+				.typeType(Language.TypingType.DYNAMIC)
+				.date(1990)
+				.purpose("adsadsadsa")
+				.build();
+		languageDao.save(language);
+		languageDao.save(language2);
+		List<LanguageSelection> l=languageService.getNamesAndImages();
+		LanguageSelection languageSelection= new LanguageSelection("python","");
+		LanguageSelection languageSelection2= new LanguageSelection("c","");
+		assertEquals(l.get(0),languageSelection);
+		assertEquals(l.get(1),languageSelection2);
 	}
 
 

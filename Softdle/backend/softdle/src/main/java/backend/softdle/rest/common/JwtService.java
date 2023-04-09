@@ -3,6 +3,7 @@ package backend.softdle.rest.common;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -23,6 +24,7 @@ public class JwtService {
     private String signKey;
     @Value("${project.jwt.expirationMinutes}")
     private long expirationMinutes;
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -60,7 +62,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())

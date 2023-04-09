@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/api/**").permitAll()
-                .requestMatchers("/users/history").hasRole("USER")
+                .requestMatchers("/users/**").hasAnyAuthority("USER")
                 .anyRequest()
                 .authenticated()
                 .and()
