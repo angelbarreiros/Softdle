@@ -1,8 +1,10 @@
 package backend.softdle.rest.controllers;
 
+import backend.softdle.model.entities.Language;
 import backend.softdle.model.exceptions.LanguageNotFoundException;
 import backend.softdle.model.services.LanguageSelection;
 import backend.softdle.model.services.LanguageService;
+import backend.softdle.rest.dtos.LanguageCharacteristicsDto;
 import backend.softdle.rest.dtos.LanguageResponseDto;
 import backend.softdle.rest.dtos.LanguageSelectionDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import static backend.softdle.rest.dtos.LanguageCharacteristicConversor.toLanguageCharacteristicsDto;
 import static backend.softdle.rest.dtos.LanguageResponseConversor.toLanguageResponseDto;
 
 @RestController
@@ -27,6 +30,15 @@ public class FindController {
     @PostMapping("/find")
     public LanguageResponseDto find(@RequestParam String name) throws LanguageNotFoundException {
       return toLanguageResponseDto(languageService.tryToFind(name));
+    }
+    @GetMapping("/get")
+    public LanguageCharacteristicsDto getLanguage(@RequestParam String name) throws LanguageNotFoundException, IOException {
+        Language language= languageService.getLanguage(name);
+        LanguageCharacteristicsDto languageCharacteristicsDto= toLanguageCharacteristicsDto(language);
+        Resource resource = resourceLoader.getResource("classpath:"+language.getImagePath());
+        byte[] bytes = Files.readAllBytes(resource.getFile().toPath());
+        languageCharacteristicsDto.setImagePath(bytes);
+        return languageCharacteristicsDto;
     }
     @GetMapping(value = "/languages")
     public List<LanguageSelectionDto> getLanguages() throws IOException {

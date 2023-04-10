@@ -22,7 +22,7 @@ public class LanguageServiceImpl implements LanguageService {
 
     public LanguageResponse tryToFind(String name) throws LanguageNotFoundException {
         Language language=languageDao.findByIsTheOne(true).orElseThrow(()-> new LanguageNotFoundException("Error , se ha liado la base de datos"));
-        Language trylanguage=languageDao.findByName(name).orElseThrow(()-> new LanguageNotFoundException(name));
+        Language trylanguage=languageDao.findByNameIgnoreCase(name).orElseThrow(()-> new LanguageNotFoundException(name));
         if (language.equals(trylanguage)){
             return new LanguageResponse(true,true,true, LanguageResponse.DateType.Perfect
                     ,true,true,true, LanguageResponse.DateType.Perfect);
@@ -43,6 +43,11 @@ public class LanguageServiceImpl implements LanguageService {
         language.setIsTheOne(false);
         Language insertLanguage=languageDao.findById(result).orElseThrow(() -> new LanguageNotFoundException("random number has failed"));
         insertLanguage.setIsTheOne(true);
+    }
+
+    @Override
+    public Language getLanguage(String language) throws LanguageNotFoundException {
+        return languageDao.findByNameIgnoreCase(language).orElseThrow(() -> new LanguageNotFoundException(language));
     }
 
     private LanguageResponse compare(Language language, Language trylanguage){

@@ -12,6 +12,6 @@ public interface LanguageDao extends CrudRepository<Language,Long> {
     @Query(value = "SELECT NEW backend.softdle.model.services.LanguageSelection(p.name,p.imagePath) from Language p")
 
     List<LanguageSelection> getNamesAndImages();
-    Optional<Language> findByName(String name);
+    Optional<Language> findByNameIgnoreCase(String name);
     Optional<Language> findByIsTheOne(Boolean bool);
 }

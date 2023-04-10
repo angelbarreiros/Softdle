@@ -1,7 +1,6 @@
 package backend.softdle.rest.controllers;
 
 
-import backend.softdle.model.entities.UserDao;
 import backend.softdle.model.entities.Wins;
 import backend.softdle.model.services.Block;
 import backend.softdle.model.services.WinsService;

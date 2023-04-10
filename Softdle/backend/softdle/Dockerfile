@@ -5,4 +5,4 @@ COPY src/main/sql/2-postgresqlCreateData.sql /docker-entrypoint-initdb.d/BCreate
 
 ENV POSTGRES_PASSWORD=sof
 ENV POSTGRES_USER=sof
-ENV POSTGRES_DB=sofdleproject
+ENV POSTGRES_DB=softdleproject
