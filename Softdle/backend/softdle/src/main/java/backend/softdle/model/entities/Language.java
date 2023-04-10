@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class Language {
     public enum TypingType {DYNAMIC,STATIC,BOTH,NO}
     public enum CompilingType {COMPILED,INTERPRETED,BOTH,NO}
-    public enum Paradigm {FUNCTIONAL,OOP,MULTIPARADIGM, IMPERATIVE,PROCEDURAL}
+    public enum Paradigm {FUNCTIONAL,OOP,MULTI, IMPERATIVE,PROCEDURAL}
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "language__id_seq")
     @SequenceGenerator(name = "language__id_seq", sequenceName = "language__id_seq", allocationSize = 1)
