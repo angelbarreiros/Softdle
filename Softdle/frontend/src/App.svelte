@@ -1,130 +1,152 @@
 <script>
-    import { fade, fly } from 'svelte/transition';
+    import {fly} from 'svelte/transition';
     import {count, languages} from "./state.js";
-    let header=false
+
+    let header = false
     let input;
     let urilanguage = "http://localhost:8080/api/languages"
     let urifind = "http://localhost:8080/api/find?name="
-    let uriget= "http://localhost:8080/api/get?name="
+    let uriget = "http://localhost:8080/api/get?name="
     fetch(urilanguage).then((response) => response.json().then(response => {
         response.map(item => $languages = [...$languages, item])
     }))
     let answer = [];
 
 
-     function find() {
-        fetch(urifind + input.value, {method: "POST"}).then(response => response.json().then( (response) => {
-            fetch(uriget+input.value,{method:"GET"}).then(r=>r.json().then((r)=>{
-                let arr = Object.values(response)
-                let match = arr.shift()
-                let charac=Object.values(r)
-                let item=charac.shift()
-                console.log(charac)
-                answer = [ ...answer,{arr: arr,charac:charac, image: "data:image/png;base64, " + item}]
-                header=true;
-                if (match){
-                    $count=5;
-                }else {
-                    $count++;
-                }
-            }))
-        }))
+    function find() {
+        fetch(urifind + input.value, {method: "POST"}).then(response =>{
+            if (response.ok){
+                response.json().then((response) => {
+                    fetch(uriget + input.value, {method: "GET"}).then(r => {
+                        if (r.ok){
+                            r.json().then((r) => {
+                                input.value=''
+                                let arr = Object.values(response)
+                                let match = arr.shift()
+                                let charac = Object.values(r)
+                                let item = charac.shift()
+                                console.log(charac)
+                                answer = [...answer, {arr: arr, charac: charac, image: "data:image/png;base64, " + item}]
+                                header = true;
+                                if (match) {
+                                    $count = 5;
+                                } else {
+                                    $count++;
+                                }
+
+                            })
+                        }
+                    })
+                })
+            }
+            else{
+                input.value=''
+                button.disabled=true
+                input.animate([
+                    { transform: 'translateX(-5px)', borderColor: 'red' },
+                    { transform: 'translateX(5px)', borderColor: 'red' },
+                    { transform: 'translateX(-5px)', borderColor: 'red' },
+                    { transform: 'translateX(5px)', borderColor: 'red' },
+                    { transform: 'translateX(-5px)', borderColor: 'red' },
+                    { transform: 'translateX(0px)', borderColor: '' }
+                ], {
+                    duration: 100,
+                    iterations: 5
+                });
+                setTimeout(() => {
+                    button.disabled = false;
+                }, 500);
+            }
+        })
 
     }
 
     let button;
-
+    function enter(event){
+        if (event.code === 'Enter') {
+            find();
+        }
+    }
     function debug() {
         console.log(Object.values(answer))
     }
 
-    function onlyLanguages() {
-        return $languages.map(item => item.name)
-    }
-
-
 </script>
 <main>
-    {#if ($count !==5)}
-        <main>
-            <!--    <button on:click={()=>debug()}></button>-->
-            <div class="inputbutton">
-                <input list="languages" type="text" bind:this={input}>
-                <button bind:this={button} on:click={()=>find()}>TRY</button>
-                <datalist id="languages">
-                    {#each $languages as item}
-                        <option value={item.name}></option>
-                    {/each}
-                </datalist>
+    <!--    <button on:click={()=>debug()}></button>-->
+    <div class="inputbutton">
+        <input placeholder="Type language name" list="languages" type="text" bind:this={input} on:keydown={(event)=> enter(event)}>
+        <button bind:this={button} on:click={()=>find()}>TRY</button>
+        <datalist id="languages">
+            {#each $languages as item}
+                <option value={item.name}></option>
+            {/each}
+        </datalist>
+    </div>
+    <div class="absolute">
+        {#if (header === true)}
+            <div class="header">
+                <div class="square">Language</div>
+                <div class="square">Typing</div>
+                <div class="square">Compiling</div>
+                <div class="square">Release</div>
+                <div class="square">Creator</div>
+                <div class="square">Paradigm</div>
+                <div class="square">Purpose</div>
+                <div class="square">Jobs</div>
             </div>
-            <div class="absolute">
-                {#if (header === true)}
-                    <div class="header">
-                        <div class="square">Language </div>
-                        <div class="square">Typing</div>
-                        <div class="square">Compiling </div>
-                        <div class="square">Release</div>
-                        <div class="square">Creator </div>
-                        <div class="square">Paradigm </div>
-                        <div class="square">Purpose </div>
-                        <div class="square">Jobs</div>
+        {/if}
+        <div class="vertical">
+            {#each answer as obj }
+                <div class="horizontal">
+                    <div class="square">
+                        <img in:fly="{{ y: 200, duration: 2000 }}" class="logo" src={obj.image} alt="true">
                     </div>
-                {/if}
-                <div class="vertical">
-                    {#each answer as obj }
-                        <div class="horizontal">
-                            <div class="square">
-                                <img  in:fly="{{ y: 200, duration: 2000 }}" class="logo" src={obj.image} alt="true">
+                    {#each obj.arr as item,i}
+                        {#if (item === true)}
+                            <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
+                                <p>{obj.charac.at(i)}</p>
+                                <img src="src/assets/true.jpg" alt="true">
                             </div>
-                            {#each obj.arr as item,i}
-                                {#if (item === true)}
-                                    <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
-                                        <p>{obj.charac.at(i)}</p>
-                                        <img src="src/assets/true.jpg" alt="true">
-                                    </div>
-                                {/if}
-                                {#if (item === false)}
-                                    <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
-                                        <p>{obj.charac.at(i)}</p>
-                                        <img src="src/assets/false.jpg" alt="false">
-                                    </div>
-                                {/if}
-                                {#if (item === "More")}
-                                    <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
-                                        <p>{obj.charac.at(i)}</p>
-                                        <img src="src/assets/high.jpg" alt="higher">
-                                    </div>
-                                {/if}
-                                {#if (item === "Less")}
-                                    <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
-                                        <p>{obj.charac.at(i)}</p>
-                                        <img src="src/assets/low.jpg" alt="lower">
-                                    </div>
-                                {/if}
-                                {#if (item === "Perfect")}
-                                    <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
-                                        <p>{obj.charac.at(i)}</p>
-                                        <img src="src/assets/true.jpg" alt="perfect">
-                                    </div>
-                                {/if}
-                            {/each}
-                        </div>
+                        {/if}
+                        {#if (item === false)}
+                            <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
+                                <p>{obj.charac.at(i)}</p>
+                                <img src="src/assets/false.jpg" alt="false">
+                            </div>
+                        {/if}
+                        {#if (item === "More")}
+                            <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
+                                <p>{obj.charac.at(i)}</p>
+                                <img src="src/assets/high.jpg" alt="higher">
+                            </div>
+                        {/if}
+                        {#if (item === "Less")}
+                            <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
+                                <p>{obj.charac.at(i)}</p>
+                                <img src="src/assets/low.jpg" alt="lower">
+                            </div>
+                        {/if}
+                        {#if (item === "Perfect")}
+                            <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
+                                <p>{obj.charac.at(i)}</p>
+                                <img src="src/assets/true.jpg" alt="perfect">
+                            </div>
+                        {/if}
                     {/each}
                 </div>
-            </div>
-        </main>
-
-    {:else }
-        Ganaste
-    {/if}
+            {/each}
+        </div>
+    </div>
 </main>
 
 <style>
-    main{
+    main {
 
         background-color: black;
     }
-    p{
+
+    p {
         position: absolute;
         top: 40%;
         left: 50%;
@@ -133,6 +155,7 @@
         white-space: normal;
 
     }
+
     .horizontal {
         display: flex;
         flex-direction: row;
@@ -148,7 +171,8 @@
         margin-top: 10px;
 
     }
-    .horizontal .square{
+
+    .horizontal .square {
         position: relative;
         width: 100%;
         height: 100%;
@@ -182,7 +206,6 @@
     }
 
 
-
     input {
         width: 300px;
         height: 50px;
@@ -198,7 +221,8 @@
     button {
         height: 50px;
     }
-    .absolute{
+
+    .absolute {
         position: absolute;
         left: 0;
         right: 0;
@@ -207,14 +231,14 @@
 
 
     }
-    .inputbutton{
+
+    .inputbutton {
         position: absolute;
         left: 40%;
         right: 0;
         top: 12%;
         bottom: 0;
     }
-
 
 
 </style>
