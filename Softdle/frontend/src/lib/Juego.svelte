@@ -1,7 +1,12 @@
 <script>
     import {fly} from 'svelte/transition';
     import {count,languages} from "../state.js";
-    import Win from "./Win.svelte";
+    import {logged} from "../state.js";
+    import axios from "axios";
+    import {onMount} from "svelte";
+    onMount(function(){
+        $count=0
+    })
     let button; //bind del boton
     let input; // bind del input
     let header = false //cuando aparece la cabecera
@@ -17,7 +22,6 @@
 
 
     function find() {
-
         if (!choosed.includes(input.value.toUpperCase())){
             fetch(urifind + input.value, {method: "POST"}).then(response =>{
                 if (response.ok){
@@ -35,9 +39,44 @@
                                     answer = [...answer, {arr: arr, charac: charac, image: "data:image/png;base64, " + item}]
                                     header = true;
                                     if (match) {
+                                        if (logged){
+                                            const data ={
+                                                "isWin": true,
+                                                "attempts": $count
+                                            }
+                                            let config = {
+                                                method: 'post',
+                                                maxBodyLength: Infinity,
+                                                url: 'users/result',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                data: data
+                                            };
+                                            axios.request(config)
+                                        }
                                         $count = 5;
                                     } else {
                                         $count++;
+                                        if ($count===5){
+                                            const data ={
+                                                "isWin": false,
+                                                "attempts": $count
+                                            }
+                                            let config = {
+                                                method: 'post',
+                                                maxBodyLength: Infinity,
+                                                url: 'users/result',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                data: data
+                                            };
+                                            axios.request(config)
+                                        }
+                                        if ($count>5){
+                                            $count=1
+                                        }
                                     }
 
                                 })
@@ -149,7 +188,7 @@
     </div>
     {#if ($count===5)}
         <div class="card">
-            <Win></Win>
+
         </div>
     {/if}
 

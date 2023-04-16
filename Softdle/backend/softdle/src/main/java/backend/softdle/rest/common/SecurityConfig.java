@@ -23,6 +23,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
+                .requestMatchers("/auth/refresh").hasAnyAuthority("USER")
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/users/**").hasAnyAuthority("USER")

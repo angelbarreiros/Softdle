@@ -6,30 +6,37 @@ import backend.softdle.model.services.AuthServiceImpl;
 import backend.softdle.rest.dtos.JwtTokenDto;
 import backend.softdle.rest.dtos.LoginRequestDto;
 import backend.softdle.rest.dtos.RegisterRequestDto;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
     private AuthServiceImpl authServiceImpl;
+    @PostMapping("/refresh")
+    public JwtTokenDto refresh(@RequestAttribute String username){
+        return authServiceImpl.refresh(username);
+
+    }
     @PostMapping("/login")
-    public JwtTokenDto login(@RequestBody LoginRequestDto loginRequestDto)  {
+    public JwtTokenDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response)  {
         User user= User.builder().username(loginRequestDto.getUsername()).password(loginRequestDto.getPassword()).build();
-        return  authServiceImpl.login(user);
+        JwtTokenDto jwt= authServiceImpl.login(user);
+        return jwt;
+
+
     }
     @PostMapping("/register")
     public JwtTokenDto register(@RequestBody RegisterRequestDto registerRequestDto) throws Exception {
         User user= User.builder()
-                .firstName(registerRequestDto.getFirstName())
-                .lastName(registerRequestDto.getLastName())
+                .firstname(registerRequestDto.getFirstName())
+                .lastname(registerRequestDto.getLastName())
                 .username(registerRequestDto.getUsername())
                 .password(registerRequestDto.getPassword())
                 .streak(0)

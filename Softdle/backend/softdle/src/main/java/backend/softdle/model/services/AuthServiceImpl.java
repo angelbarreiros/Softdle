@@ -36,13 +36,22 @@ public class AuthServiceImpl  implements AuthService{
 
 
     }
+
+    @Override
+    public JwtTokenDto refresh(String usename) {
+        User user=userDao.findByUsername(usename).orElseThrow(()->new UsernameNotFoundException(usename));
+        return JwtTokenDto.builder()
+                .token(jwtService.generateToken(user))
+                .build();
+    }
+
     @Transactional
     public JwtTokenDto register(User user) throws UserAlreadyExistsException {
         Optional<User> optionalUser = userDao.findByUsername(user.getUsername());
         if (optionalUser.isEmpty()){
             User user1= User.builder()
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
+                    .firstname(user.getFirstname())
+                    .lastname(user.getLastname())
                     .username(user.getUsername())
                     .password(passwordEncoder.encode(user.getPassword()))
                     .streak(0)

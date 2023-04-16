@@ -33,8 +33,8 @@ class SoftdleApplicationTests {
 	@Test
 	public void authTest() throws UserAlreadyExistsException {
 		User user = User.builder()
-				.firstName("angel")
-				.lastName("barreiros")
+				.firstname("angel")
+				.lastname("barreiros")
 				.username("angel")
 				.password("pass")
 				.role(User.RoleType.USER)
@@ -51,8 +51,8 @@ class SoftdleApplicationTests {
 	@Test
 	public void winsTest() throws UserAlreadyExistsException {
 		User user = User.builder()
-				.firstName("angel")
-				.lastName("barreiros")
+				.firstname("angel")
+				.lastname("barreiros")
 				.username("angel")
 				.password("pass")
 				.role(User.RoleType.USER)
@@ -96,7 +96,7 @@ class SoftdleApplicationTests {
 				.numberOfJobs(100)
 				.compilingType(Language.CompilingType.COMPILED)
 				.creator("fdsads")
-				.paradigm(Language.Paradigm.MULTIPARADIGM)
+				.paradigm(Language.Paradigm.MULTI)
 				.typeType(Language.TypingType.DYNAMIC)
 				.date(1990)
 				.purpose("adsadsadsa")
@@ -134,7 +134,7 @@ class SoftdleApplicationTests {
 				.numberOfJobs(100)
 				.compilingType(Language.CompilingType.COMPILED)
 				.creator("fdsads")
-				.paradigm(Language.Paradigm.MULTIPARADIGM)
+				.paradigm(Language.Paradigm.MULTI)
 				.typeType(Language.TypingType.DYNAMIC)
 				.date(1990)
 				.purpose("adsadsadsa")

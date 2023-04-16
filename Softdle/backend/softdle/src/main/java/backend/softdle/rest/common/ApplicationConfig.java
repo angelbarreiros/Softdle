@@ -1,6 +1,8 @@
 package backend.softdle.rest.common;
 
 import backend.softdle.model.entities.UserDao;
+import org.apache.tomcat.util.http.CookieProcessor;
+import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -47,4 +49,5 @@ public class ApplicationConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

@@ -20,7 +20,6 @@ public class UserController {
     @GetMapping("/history")
     public BlockDto<WinsDto> getHistory(@RequestAttribute String username,
                                         @RequestParam(defaultValue="0") int page){
-        System.out.println(username);
         Block<Wins> winsBlock=winsService.winsHistory(username,page, Wins.HISTORY_SIZE);
         return new BlockDto<>(WinsHistoryConversor.toWinsDtos(winsBlock.getItems()),winsBlock.getExistMoreItems());
     }

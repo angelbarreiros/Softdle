@@ -1,6 +1,4 @@
 package backend.softdle.rest.common;
-
-import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         String token = authHeader.substring(7);
         String username = jwtService.extractUsername(token);
-        String role= (String) jwtService.extractAllClaims(token).get("role");
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtService.isTokenValid(token, userDetails)) {
