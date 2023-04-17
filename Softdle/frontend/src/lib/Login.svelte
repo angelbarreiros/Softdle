@@ -27,7 +27,6 @@
                    document.cookie = `jwt=${response.data.token}; max-age=3600; path=/; secure; SameSite=Lax;`;
                    axios.defaults.headers.common['Authorization'] ='Bearer '+ response.data.token
                    $logged=true
-                   console.log($logged)
                    push('/userHistory')
                }
             })

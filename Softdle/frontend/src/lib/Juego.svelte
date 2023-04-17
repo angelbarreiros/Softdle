@@ -10,6 +10,40 @@
     let choosed=[]; //lenguages elejidos por el usuario -> falta meterlo en el cache del navegador
     let urifind = "http://localhost:8080/api/find?name="
     let uriget = "http://localhost:8080/api/get?name="
+    let played=false;
+    const result=(result)=>{
+        const data ={
+            "isWin": result,
+            "attempts": $count
+        }
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'users/result',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
+        axios.request(config)
+    }
+
+    // if ($logged){
+    //     let config = {
+    //         method: 'get',
+    //         maxBodyLength: Infinity,
+    //         url: 'users/isPlayed',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //     };
+    //     axios.request(config).then(response=>played=response.data)
+    //     console.log(played)
+    //
+    //
+    // }else{
+    //     console.log(localStorage.getItem(played))
+    // }
 
 
 
@@ -33,39 +67,14 @@
                                     header = true;
                                     if (match) {
                                         if (logged){
-                                            const data ={
-                                                "isWin": true,
-                                                "attempts": $count
-                                            }
-                                            let config = {
-                                                method: 'post',
-                                                maxBodyLength: Infinity,
-                                                url: 'users/result',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                data: data
-                                            };
-                                            axios.request(config)
+                                            result(true)
                                         }
+
                                         $count = 5;
                                     } else {
                                         $count++;
                                         if ($count===5){
-                                            const data ={
-                                                "isWin": false,
-                                                "attempts": $count
-                                            }
-                                            let config = {
-                                                method: 'post',
-                                                maxBodyLength: Infinity,
-                                                url: 'users/result',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                data: data
-                                            };
-                                            axios.request(config)
+                                            result(false)
                                         }
                                         if ($count>5){
                                             $count=1

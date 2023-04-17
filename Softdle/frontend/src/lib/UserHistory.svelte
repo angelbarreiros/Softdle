@@ -3,9 +3,6 @@
     import {push} from "svelte-spa-router";
     import {hasNext, logged} from "../state.js";
     import History from "./History.svelte";
-    if (!$logged){
-         push('/forbidden')
-    }
     const logout=()=>{
         axios.defaults.headers.common['Authorization']='';
         $logged=false
@@ -25,20 +22,22 @@
     let next;
     let prev;
     const  nextPage=()=>{
-        next.disabled=$hasNext
         prev.disabled=false
         page=page+1
         config.url='users/history?page='+page
     }
 
     const  prevPage=()=>{
-        next.disabled=$hasNext
+        next.disabled=false
         page=page-1;
         if (page-1<0){
             prev.disabled=true
         }
         config.url='users/history?page='+page
 
+    }
+    const cambio=()=>{
+        next.disabled=$hasNext
     }
 
 
@@ -49,7 +48,7 @@
 </script>
 
 <div  class="container">
-    <History config={config}></History>
+    <History config={config} on:cambio={cambio}></History>
     <div>
         <button disabled="disabled" bind:this={prev}  on:click={prevPage} >Previous page</button>
 

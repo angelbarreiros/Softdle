@@ -19,7 +19,7 @@ CREATE TABLE users (
                                     lastname VARCHAR(255) NOT NULL,
                                     username VARCHAR(255) NOT NULL UNIQUE,
                                     password VARCHAR(255) NOT NULL,
-                                    streak INTEGER NOT NULL DEFAULT 0,
+                                    isPLayed BOOLEAN NOT NULL,
                                     role VARCHAR(255) NOT NULL
 );
 CREATE TABLE wins (

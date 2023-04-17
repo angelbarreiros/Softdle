@@ -20,6 +20,7 @@ public class WinsServiceImpl implements WinsService {
     private WinsDao winsDao;
     @Autowired
     private UserDao userDao;
+
     @Override
     public Block<Wins> winsHistory(String username, int page, int size) {
         Slice<Wins> slice= winsDao.findAllByUserUsernameOrderByDateDesc(username, PageRequest.of(page,size));
@@ -29,18 +30,25 @@ public class WinsServiceImpl implements WinsService {
     @Override
     public void addWin(String username, int nofattempts) {
         User user= userDao.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("not found"));
-        user.setStreak(user.getStreak()+1);
+        user.setIsPlayed(true);
         Wins wins= Wins.builder().user(user).date(LocalDateTime.now()).numberOfAttempts(nofattempts).build();
         winsDao.save(wins);
     }
+    @Transactional
+    @Override
     public void addloose(String username, int nofattempts) {
         User user= userDao.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("not found"));
-        user.setStreak(0);
+        user.setIsPlayed(true);
         Wins wins= Wins.builder().user(user).date(LocalDateTime.now()).numberOfAttempts(nofattempts).build();
         winsDao.save(wins);
     }
 
+    @Override
+    public Boolean isPlayed(String username) {
+        User user= userDao.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("not found"));
+        return user.getIsPlayed();
 
+    }
 
 
 }

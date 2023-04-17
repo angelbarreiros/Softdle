@@ -17,6 +17,8 @@ public class UserController {
     @Autowired
     private WinsService winsService;
 
+
+
     @GetMapping("/history")
     public BlockDto<WinsDto> getHistory(@RequestAttribute String username,
                                         @RequestParam(defaultValue="0") int page){
@@ -27,10 +29,17 @@ public class UserController {
     public void addResult(@RequestAttribute String username, @RequestBody ResultDto resultDto){
      if (resultDto.getIsWin()){
          winsService.addWin(username,resultDto.getAttempts());
+
      }
      else {
          winsService.addloose(username,resultDto.getAttempts());
      }
+    }
+
+    @GetMapping("/isPlayed")
+    public Boolean addResult(@RequestAttribute String username){
+        return winsService.isPlayed(username);
+
     }
 
 

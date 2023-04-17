@@ -45,6 +45,11 @@ public class AuthServiceImpl  implements AuthService{
                 .build();
     }
 
+    @Override
+    public Boolean verify(String token) {
+        return jwtService.verify(token);
+    }
+
     @Transactional
     public JwtTokenDto register(User user) throws UserAlreadyExistsException {
         Optional<User> optionalUser = userDao.findByUsername(user.getUsername());
@@ -54,7 +59,7 @@ public class AuthServiceImpl  implements AuthService{
                     .lastname(user.getLastname())
                     .username(user.getUsername())
                     .password(passwordEncoder.encode(user.getPassword()))
-                    .streak(0)
+                    .isPlayed(false)
                     .role(User.RoleType.USER)
                     .build();
             User use2r =userDao.save(user1);

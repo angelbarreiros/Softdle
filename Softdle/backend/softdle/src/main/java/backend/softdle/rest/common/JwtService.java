@@ -75,5 +75,17 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(signKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+    public boolean verify(String token){
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(getSignInKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 }

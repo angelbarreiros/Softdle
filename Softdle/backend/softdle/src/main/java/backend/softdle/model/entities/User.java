@@ -27,7 +27,7 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
     private String password;
-    private int streak;
+    private Boolean isPlayed;
     public enum RoleType {USER,ADMIN}
     @Enumerated(EnumType.STRING)
     private RoleType role;

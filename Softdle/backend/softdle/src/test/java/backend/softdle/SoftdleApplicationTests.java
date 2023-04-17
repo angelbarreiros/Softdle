@@ -29,6 +29,8 @@ class SoftdleApplicationTests {
 	private WinsService winsService;
 	@Autowired
 	private LanguageService languageService;
+	@Autowired
+	private ScheduledTaskService scheduledTaskService;
 
 	@Test
 	public void authTest() throws UserAlreadyExistsException {
@@ -38,14 +40,22 @@ class SoftdleApplicationTests {
 				.username("angel")
 				.password("pass")
 				.role(User.RoleType.USER)
-				.streak(0)
+				.isPlayed(false)
 				.build();
 		authService.register(user);
 		assertThrows(UserAlreadyExistsException.class, () -> authService.register(user));
 		assertEquals(userDao.findByUsername(user.getUsername()).get().getUsername(), user.getUsername());
 		authService.login(user);
+		assertEquals(user.getIsPlayed(),false);
+		winsService.addWin("angel",2);
+		assertEquals(userDao.findByUsername("angel").get().getIsPlayed(), true);
+		scheduledTaskService.usersCanPlay();
+		assertEquals(userDao.findByUsername("angel").get().getIsPlayed(),false);
+
+		scheduledTaskService.usersCanPlay();
 		user.setPassword("sdadsadsa");
 		assertThrows(BadCredentialsException.class,()-> authService.login(user));
+
 	}
 
 	@Test
@@ -56,7 +66,7 @@ class SoftdleApplicationTests {
 				.username("angel")
 				.password("pass")
 				.role(User.RoleType.USER)
-				.streak(0)
+				.isPlayed(false)
 				.build();
 
 		Block<Wins> winsBlock1 =winsService.winsHistory("angel",0,Wins.HISTORY_SIZE);
@@ -147,6 +157,7 @@ class SoftdleApplicationTests {
 		assertEquals(l.get(0),languageSelection);
 		assertEquals(l.get(1),languageSelection2);
 	}
+
 
 
 }

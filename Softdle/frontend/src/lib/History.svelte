@@ -1,6 +1,7 @@
 <script>
 import axios from "axios";
 import {hasNext} from "../state.js";
+import {createEventDispatcher} from "svelte";
 export let config={
     method: 'get',
     maxBodyLength: Infinity,
@@ -24,12 +25,18 @@ const getDate=(mili)=>{
     return formatter.format(date);
 
 }
+let dispatch = createEventDispatcher()
+const subir=()=>{
+    dispatch('cambio')
+}
 
 const thePromise=(config)=>{
+
     return new Promise(async (resolve,reject)=>{
         try {
             axios.request(config).then((response)=>{
-                $hasNext=response.data.existMoreItems
+                $hasNext=!response.data.existMoreItems
+                subir()
                 resolve(response)
             })
         }catch (error){

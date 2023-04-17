@@ -20,6 +20,7 @@ const routes= {
     '/forbidden':Forbidden,
     '*':NotFound
 }
+console.log($logged)
 </script>
 {#if $logged}
     <div class="cabecera">

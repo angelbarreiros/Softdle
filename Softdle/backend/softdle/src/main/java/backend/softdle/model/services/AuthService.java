@@ -8,4 +8,5 @@ public interface AuthService {
      JwtTokenDto register(User user) throws UserAlreadyExistsException;
      JwtTokenDto login(User user);
      JwtTokenDto refresh(String usename);
+     Boolean verify(String usename);
 }
