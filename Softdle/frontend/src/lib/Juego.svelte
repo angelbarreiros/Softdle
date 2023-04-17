@@ -3,21 +3,14 @@
     import {count,languages} from "../state.js";
     import {logged} from "../state.js";
     import axios from "axios";
-    import {onMount} from "svelte";
-    onMount(function(){
-        $count=0
-    })
     let button; //bind del boton
     let input; // bind del input
     let header = false //cuando aparece la cabecera
     let answer = []; //datos que se usaran en cada cuadradito
     let choosed=[]; //lenguages elejidos por el usuario -> falta meterlo en el cache del navegador
-    let urilanguage = "http://localhost:8080/api/languages"
     let urifind = "http://localhost:8080/api/find?name="
     let uriget = "http://localhost:8080/api/get?name="
-    fetch(urilanguage).then((response) => response.json().then(response => {
-        response.map(item => $languages = [...$languages, item])
-    }))
+
 
 
 
