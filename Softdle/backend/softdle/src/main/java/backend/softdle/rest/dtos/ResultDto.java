@@ -13,4 +13,5 @@ import lombok.Setter;
 public class ResultDto {
     private Boolean isWin;
     private Integer attempts;
+    private String language;
 }

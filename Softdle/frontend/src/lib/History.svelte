@@ -10,7 +10,7 @@ export let config={
         'Content-Type': 'application/json'
     },
 };
-const createArray=(x)=>{
+ const createArray=(x)=>{
     return   Array.from({length: x}, (_, i) => i);
 }
 const getDate=(mili)=>{

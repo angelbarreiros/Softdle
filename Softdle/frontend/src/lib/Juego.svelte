@@ -1,10 +1,9 @@
 <script>
     import {fly} from 'svelte/transition';
-    import {count,languages} from "../state.js";
-    import {logged} from "../state.js";
+    import {count, languages, logged} from "../state.js";
     import axios from "axios";
-    import {onMount} from "svelte";
-    import {getJwtToken} from "../interceptors/axios.js";
+    import {createEventDispatcher, onMount} from "svelte";
+
     let button; //bind del boton
     let input; // bind del input
     let header = false //cuando aparece la cabecera
@@ -13,6 +12,7 @@
     let urifind = "http://localhost:8080/api/find?name="
     let uriget = "http://localhost:8080/api/get?name="
     let played=false;
+    let dispatch=createEventDispatcher()
     onMount(()=>{
         $:{
             let urilanguage = "http://localhost:8080/api/languages"
@@ -21,10 +21,17 @@
             }))
         }
     })
-    const result=(result)=>{
+    const f=()=>{
+        dispatch("loose")
+    }
+    const gg=()=>{
+        dispatch("win")
+    }
+    const result=(result,language)=>{
         const data ={
             "isWin": result,
-            "attempts": $count
+            "attempts": $count,
+            "language": language
         }
         let config = {
             method: 'post',
@@ -49,7 +56,7 @@
                                 r.json().then((r) => {
                                     $languages=$languages.filter(item=>item.name.toUpperCase()!==input.value.toUpperCase())
                                     choosed=[...choosed,input.value.toUpperCase()]
-                                    input.value=''
+
                                     let arr = Object.values(response)
                                     let match = arr.shift()
                                     let charac = Object.values(r)
@@ -58,33 +65,45 @@
                                     header = true;
                                     if (match) {
                                         if ($logged){
-                                            result(true)
+                                            result(true,input.value)
+                                            gg()
+                                            input.value=''
                                         }
+                                        else{
+                                            localStorage.setItem("language",input.value)
+                                            localStorage.setItem("played","true")
+                                            localStorage.setItem("count",$count.toString())
+                                            let tomorrow=new Date(Date.now())
+                                            tomorrow.setHours(23);
+                                            tomorrow.setMinutes(59);
+                                            tomorrow.setSeconds(59);
+                                            tomorrow.setMilliseconds(999);
+                                            localStorage.setItem("nextPlayed",tomorrow.getTime())
 
-                                        let now = Date.now()
-                                        localStorage.setItem("played","true")
-                                        localStorage.setItem("lastPlayed",now.toString())
-                                        let tomorrow = now+ 24*60*1000;
-                                        tomorrow=new Date(tomorrow)
-                                        tomorrow.setHours(0);
-                                        tomorrow.setMinutes(0);
-                                        tomorrow.setSeconds(0);
-                                        tomorrow.setMilliseconds(0);
-                                        localStorage.setItem("nextPlayed",tomorrow.getTime().toString())
+                                            gg()
+                                            input.value=''
+
+                                        }
                                         $count = 5;
                                     }
                                     else {
                                         $count++;
                                         if ($count===5){
                                             if ($logged){
-                                                result(false)
+                                                result(false,input.value)
+                                                f()
                                             }else{
+                                                localStorage.setItem("loose?","true")
                                                 localStorage.setItem("played","true")
+                                                localStorage.setItem("language",input.value)
+                                                f()
                                             }
                                         }
                                         if ($count>5){
                                             $count=1
                                         }
+                                        input.value=''
+
                                     }
 
                                 })
@@ -174,13 +193,13 @@
                         {#if (item === "More")}
                             <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
                                 <p>{obj.charac.at(i)}</p>
-                                <img src="src/assets/high.jpg" alt="higher">
+                                <img src="src/assets/low.jpg" alt="higher">
                             </div>
                         {/if}
                         {#if (item === "Less")}
                             <div in:fly="{{ y: 200, duration: 2000 }}" class="square">
                                 <p>{obj.charac.at(i)}</p>
-                                <img src="src/assets/low.jpg" alt="lower">
+                                <img src="src/assets/high.jpg" alt="lower">
                             </div>
                         {/if}
                         {#if (item === "Perfect")}

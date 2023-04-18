@@ -4,10 +4,7 @@ package backend.softdle.rest.controllers;
 import backend.softdle.model.entities.Wins;
 import backend.softdle.model.services.Block;
 import backend.softdle.model.services.WinsService;
-import backend.softdle.rest.dtos.BlockDto;
-import backend.softdle.rest.dtos.ResultDto;
-import backend.softdle.rest.dtos.WinsDto;
-import backend.softdle.rest.dtos.WinsHistoryConversor;
+import backend.softdle.rest.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,17 +25,23 @@ public class UserController {
     @PostMapping("/result")
     public void addResult(@RequestAttribute String username, @RequestBody ResultDto resultDto){
      if (resultDto.getIsWin()){
-         winsService.addWin(username,resultDto.getAttempts());
+         winsService.addWin(username,resultDto.getAttempts(),resultDto.getLanguage());
 
      }
      else {
-         winsService.addloose(username,resultDto.getAttempts());
+         winsService.addloose(username,resultDto.getAttempts(),resultDto.getLanguage());
      }
     }
 
     @GetMapping("/isPlayed")
     public Boolean addResult(@RequestAttribute String username){
         return winsService.isPlayed(username);
+
+    }
+    @GetMapping("/lastResult")
+    public LastResultDto lastResult(@RequestAttribute String username){
+        Wins wins=winsService.winsHistory(username,0, Wins.HISTORY_SIZE).getItems().get(0);
+        return new LastResultDto(wins.getLanguage(),wins.getNumberOfAttempts());
 
     }
 

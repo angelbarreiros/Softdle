@@ -26,6 +26,7 @@ CREATE TABLE wins (
                                     id BIGSERIAL PRIMARY KEY,
                                     date DATE NOT NULL,
                                     numberOfAttempts INTEGER NOT NULL DEFAULT 0,
-                                    user_id BIGINT NOT NULL,
+                                    language VARCHAR(255),
+                                        user_id BIGINT NOT NULL,
                                     FOREIGN KEY (user_id) REFERENCES users(id)
 );

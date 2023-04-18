@@ -23,23 +23,23 @@ public class WinsServiceImpl implements WinsService {
 
     @Override
     public Block<Wins> winsHistory(String username, int page, int size) {
-        Slice<Wins> slice= winsDao.findAllByUserUsernameOrderByDateDesc(username, PageRequest.of(page,size));
+        Slice<Wins> slice= winsDao.findAllByUserUsernameOrderByDateAsc(username, PageRequest.of(page,size));
         return new Block<>(slice.getContent(),slice.hasNext());
     }
     @Transactional
     @Override
-    public void addWin(String username, int nofattempts) {
+    public void addWin(String username, int nofattempts, String language) {
         User user= userDao.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("not found"));
         user.setIsPlayed(true);
-        Wins wins= Wins.builder().user(user).date(LocalDateTime.now()).numberOfAttempts(nofattempts).build();
+        Wins wins= Wins.builder().user(user).date(LocalDateTime.now()).numberOfAttempts(nofattempts).language(language).build();
         winsDao.save(wins);
     }
     @Transactional
     @Override
-    public void addloose(String username, int nofattempts) {
+    public void addloose(String username, int nofattempts,String language) {
         User user= userDao.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("not found"));
         user.setIsPlayed(true);
-        Wins wins= Wins.builder().user(user).date(LocalDateTime.now()).numberOfAttempts(nofattempts).build();
+        Wins wins= Wins.builder().user(user).date(LocalDateTime.now()).numberOfAttempts(nofattempts).language(language).build();
         winsDao.save(wins);
     }
 
@@ -49,6 +49,7 @@ public class WinsServiceImpl implements WinsService {
         return user.getIsPlayed();
 
     }
+
 
 
 }

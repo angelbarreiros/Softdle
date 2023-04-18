@@ -1,14 +1,14 @@
 <script>
     import axios from "axios";
-    import  {replace} from 'svelte-spa-router';
+
     import {hasNext, logged} from "../state.js";
     import History from "./History.svelte";
     const logout=()=>{
         axios.defaults.headers.common['Authorization']='';
         $logged=false
         document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax;";
+        window.location.href = '/';
 
-        replace('/login')
     }
      let config= {
         method: 'get',

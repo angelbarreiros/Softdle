@@ -21,6 +21,7 @@ public class Wins {
     private Long id;
     private LocalDateTime date;
     private int numberOfAttempts;
+    private String language;
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "user_id")
     private User user;

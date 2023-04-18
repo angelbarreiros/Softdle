@@ -47,7 +47,7 @@ class SoftdleApplicationTests {
 		assertEquals(userDao.findByUsername(user.getUsername()).get().getUsername(), user.getUsername());
 		authService.login(user);
 		assertEquals(user.getIsPlayed(),false);
-		winsService.addWin("angel",2);
+		winsService.addWin("angel",2,"java");
 		assertEquals(userDao.findByUsername("angel").get().getIsPlayed(), true);
 		scheduledTaskService.usersCanPlay();
 		assertEquals(userDao.findByUsername("angel").get().getIsPlayed(),false);
@@ -73,9 +73,9 @@ class SoftdleApplicationTests {
 		assertEquals(winsBlock1.getItems().size(),0);
 
 		authService.register(user);
-		winsService.addWin("angel",2);
-		winsService.addWin("angel",1);
-		winsService.addloose("angel",10);
+		winsService.addWin("angel",2,"java");
+		winsService.addWin("angel",1,"java");
+		winsService.addloose("angel",10,"java");
 
 		Block<Wins> winsBlock =winsService.winsHistory("angel",0,Wins.HISTORY_SIZE);
 		assertEquals(winsBlock.getItems().size(),3);

@@ -16,14 +16,16 @@ const routes= {
     '/register': Register,
     '/userHistory': UserHistory,
     '/error':Error,
-    '/forbidden':Forbidden,
-    '*':NotFound
+    '/forbidden': Forbidden,
+    '*': NotFound,
+    '/:path*': NotFound
+
 }
 </script>
 {#if $logged}
     <div class="cabecera">
         <div>
-            <button on:click={()=>push('/')}> Home</button>
+            <button on:click={()=>window.location.href = '/' }> Home</button>
         </div>
         <div class="pana">
             <button on:click={()=>push('/userHistory')}> History</button>
@@ -33,7 +35,7 @@ const routes= {
 {:else }
     <div class="cabecera">
         <div>
-            <button on:click={()=>push('/')}> Home</button>
+            <button on:click={()=>window.location.href = '/' }> Home</button>
         </div>
         <div class="pana">
             <button on:click={()=>push('/login')}> Login</button>
