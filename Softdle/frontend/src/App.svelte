@@ -1,6 +1,4 @@
 <script>
-
-import Juego from "./lib/Juego.svelte";
 import Login from "./lib/Login.svelte"
 import Register from "./lib/Register.svelte"
 import Router ,{push} from 'svelte-spa-router'
@@ -9,10 +7,11 @@ import UserHistory from "./lib/UserHistory.svelte";
 import NotFound from "./lib/NotFound.svelte";
 import {logged} from "./state.js";
 import Forbidden from "./lib/Forbidden.svelte";
+import Home from "./lib/Home.svelte";
 
 
 const routes= {
-    '/': Juego,
+    '/': Home ,
     '/login': Login,
     '/register': Register,
     '/userHistory': UserHistory,
@@ -20,7 +19,6 @@ const routes= {
     '/forbidden':Forbidden,
     '*':NotFound
 }
-console.log($logged)
 </script>
 {#if $logged}
     <div class="cabecera">

@@ -1,6 +1,6 @@
 <script>
     import axios from "axios";
-    import {push} from "svelte-spa-router";
+    import  {replace} from 'svelte-spa-router';
     import {hasNext, logged} from "../state.js";
     import History from "./History.svelte";
     const logout=()=>{
@@ -8,7 +8,7 @@
         $logged=false
         document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax;";
 
-        push('/')
+        replace('/login')
     }
      let config= {
         method: 'get',
@@ -39,11 +39,6 @@
     const cambio=()=>{
         next.disabled=$hasNext
     }
-
-
-
-
-
 
 </script>
 

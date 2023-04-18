@@ -3,6 +3,8 @@
     import {count,languages} from "../state.js";
     import {logged} from "../state.js";
     import axios from "axios";
+    import {onMount} from "svelte";
+    import {getJwtToken} from "../interceptors/axios.js";
     let button; //bind del boton
     let input; // bind del input
     let header = false //cuando aparece la cabecera
@@ -11,6 +13,14 @@
     let urifind = "http://localhost:8080/api/find?name="
     let uriget = "http://localhost:8080/api/get?name="
     let played=false;
+    onMount(()=>{
+        $:{
+            let urilanguage = "http://localhost:8080/api/languages"
+            fetch(urilanguage).then((response) => response.json().then(response => {
+                languages.set(response)
+            }))
+        }
+    })
     const result=(result)=>{
         const data ={
             "isWin": result,
@@ -27,25 +37,6 @@
         };
         axios.request(config)
     }
-
-    // if ($logged){
-    //     let config = {
-    //         method: 'get',
-    //         maxBodyLength: Infinity,
-    //         url: 'users/isPlayed',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //     };
-    //     axios.request(config).then(response=>played=response.data)
-    //     console.log(played)
-    //
-    //
-    // }else{
-    //     console.log(localStorage.getItem(played))
-    // }
-
-
 
 
     function find() {
@@ -66,15 +57,30 @@
                                     answer = [...answer, {arr: arr, charac: charac, image: "data:image/png;base64, " + item}]
                                     header = true;
                                     if (match) {
-                                        if (logged){
+                                        if ($logged){
                                             result(true)
                                         }
 
+                                        let now = Date.now()
+                                        localStorage.setItem("played","true")
+                                        localStorage.setItem("lastPlayed",now.toString())
+                                        let tomorrow = now+ 24*60*1000;
+                                        tomorrow=new Date(tomorrow)
+                                        tomorrow.setHours(0);
+                                        tomorrow.setMinutes(0);
+                                        tomorrow.setSeconds(0);
+                                        tomorrow.setMilliseconds(0);
+                                        localStorage.setItem("nextPlayed",tomorrow.getTime().toString())
                                         $count = 5;
-                                    } else {
+                                    }
+                                    else {
                                         $count++;
                                         if ($count===5){
-                                            result(false)
+                                            if ($logged){
+                                                result(false)
+                                            }else{
+                                                localStorage.setItem("played","true")
+                                            }
                                         }
                                         if ($count>5){
                                             $count=1

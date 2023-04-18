@@ -47,7 +47,8 @@ public class AuthServiceImpl  implements AuthService{
 
     @Override
     public Boolean verify(String token) {
-        return jwtService.verify(token);
+        return token != null && jwtService.verify(token);
+
     }
 
     @Transactional

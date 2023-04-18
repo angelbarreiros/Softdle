@@ -7,10 +7,13 @@ export function getJwtToken() {
     const jwtCookie = cookies.find(cookie => cookie.startsWith('jwt='));
     return jwtCookie ? jwtCookie.split('=')[1] : null;
 }
+if (getJwtToken()===null){
+    push('/')
+}
 const data={
     "token":getJwtToken()
 }
-const config={
+const verify={
     method: 'post',
     maxBodyLength: Infinity,
     url: 'http://localhost:8080/auth/verify',
@@ -19,17 +22,14 @@ const config={
     },
     data:data
 };
-if (getJwtToken()===null){
-    push('/')
-}
+
 axios.interceptors.response.use(async resp => resp, async error => {
     let loggedin;
-    await axios.request(config).then(response=>{
+    await axios.request(verify).then(response=>{
         logged.set(response.data)
     })
     logged.subscribe(value => loggedin=value)
-    console.log(loggedin)
-    if (error.response.status === 403 && loggedin) {
+    if (error.response.status === 403 && loggedin && getJwtToken()!=null ) {
         const jwtoken=getJwtToken();
         let config = {
             method: 'post',
@@ -48,13 +48,13 @@ axios.interceptors.response.use(async resp => resp, async error => {
 
                 return axios(error.config)
             }
-
+            push("/")
             return Promise.reject(error);
 
         })
 
     }
-
+    push("/")
     return Promise.reject(error);
 })
 
