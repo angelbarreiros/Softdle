@@ -1,12 +1,14 @@
 Wordle tribute for Programming Languages.
 
- #Build Needs
+#Build Needs
  
  -Maven
  
  -Docker
  
  -Node
+ 
+#Running:
   
 cd Softdle/Softdle/backend/softdle
 
