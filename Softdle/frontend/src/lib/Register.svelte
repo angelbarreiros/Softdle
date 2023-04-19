@@ -32,26 +32,35 @@
 <main >
     <form on:submit|preventDefault={submit}>
         <h1 >Please register</h1>
-        <div class="form-floating">
-            <input bind:value={firstname}>
-            <label>Email address</label>
+        <div >
+            <input id="register_firstname" bind:value={firstname}>
+            <label for="register_firstname">Firstname</label>
         </div>
-        <div class="form-floating">
-            <input bind:value={lastname}>
-            <label>Email address</label>
-        </div>
-
-        <div class="form-floating">
-            <input bind:value={username} >
-            <label>Name</label>
+        <div >
+            <input id="register_lastname" bind:value={lastname}>
+            <label for="register_lastname">Lastname</label>
         </div>
 
+        <div >
+            <input id="register_username" bind:value={username} >
+            <label for="register_username">Username</label>
+        </div>
 
-        <div class="form-floating">
-            <input bind:value={password} >
-            <label>Password</label>
+        <div>
+            <input id="register_password" type="password" bind:value={password} >
+            <label for="register_password">Password</label>
         </div>
 
         <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
     </form>
 </main>
+<style>
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        justify-content: center;
+        align-items: start;
+
+    }
+</style>

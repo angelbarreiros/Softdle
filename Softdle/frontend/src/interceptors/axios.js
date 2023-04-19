@@ -1,14 +1,10 @@
 import axios from "axios";
 import { logged} from "../state.js";
-import {push} from "svelte-spa-router";
 axios.defaults.baseURL='http://localhost:8080/'
 export function getJwtToken() {
     const cookies = document.cookie.split(';').map(cookie => cookie.trim());
     const jwtCookie = cookies.find(cookie => cookie.startsWith('jwt='));
     return jwtCookie ? jwtCookie.split('=')[1] : null;
-}
-if (getJwtToken()===null){
-    push('/')
 }
 const data={
     "token":getJwtToken()
@@ -48,13 +44,13 @@ axios.interceptors.response.use(async resp => resp, async error => {
 
                 return axios(error.config)
             }
-            push("/")
+
             return Promise.reject(error);
 
         })
 
     }
-    push("/")
+
     return Promise.reject(error);
 })
 

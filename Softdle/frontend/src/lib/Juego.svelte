@@ -14,12 +14,11 @@
     let played=false;
     let dispatch=createEventDispatcher()
     onMount(()=>{
-        $:{
             let urilanguage = "http://localhost:8080/api/languages"
             fetch(urilanguage).then((response) => response.json().then(response => {
                 languages.set(response)
             }))
-        }
+
     })
     const f=()=>{
         dispatch("loose")
@@ -64,6 +63,7 @@
                                     answer = [...answer, {arr: arr, charac: charac, image: "data:image/png;base64, " + item}]
                                     header = true;
                                     if (match) {
+
                                         if ($logged){
                                             result(true,input.value)
                                             gg()

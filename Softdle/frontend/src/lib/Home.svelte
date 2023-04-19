@@ -1,6 +1,6 @@
 <script>
     import Juego from "./Juego.svelte";
-    import {count, loggedFunction} from "../state.js";
+    import {count, logged} from "../state.js";
     import axios from "axios";
     import {getJwtToken} from "../interceptors/axios.js";
     import WinMensage from "./WinMensage.svelte";
@@ -59,9 +59,7 @@
 
 
 </script>
-{#await loggedFunction}
-    {:then response}
-    {#if response.data}
+    {#if $logged}
         {#await axios.request(config)}
             {:then play}
 <!--            // si ya ha jugado -> g es que ya ha ganado-->
@@ -74,6 +72,8 @@
 <!--                // si no que juegue-->
                 <Juego on:win={jugar} on:loose={perder}></Juego>
             {/if}
+            {:catch error}
+            <h1>The database is down</h1>
             {/await}
     {:else }
 <!--        //  si no esta loggeado-->
@@ -83,4 +83,4 @@
                     <Juego on:win={jugar} on:loose={perder} ></Juego>
                 {/if}
     {/if}
-{/await}
+

@@ -50,6 +50,7 @@ const thePromise=(config)=>{
 <div class="column">
     <div class="centered">
         {#await thePromise(config)}
+            <h1>Fetching your history...</h1>
         {:then response}
             <ol>
                 {#each response.data.items as item}
@@ -80,6 +81,8 @@ const thePromise=(config)=>{
 
                 {/each}
             </ol>
+            {:catch error }
+            <h1>The database is down , plis try in a couple seconds</h1>
         {/await}
     </div>
 

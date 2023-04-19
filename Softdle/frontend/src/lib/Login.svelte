@@ -31,7 +31,7 @@
                }
             })
             .catch(() => {
-                push('/error')
+                    push('/error')
             });
     }
 
@@ -44,7 +44,7 @@
             <label for="username">Usename</label>
         </div>
         <div>
-            <input bind:value={password} id="password" type="text">
+            <input bind:value={password} id="password" type="password">
             <label for="password">Password</label>
         </div>
         <button type="submit">Submit</button>
