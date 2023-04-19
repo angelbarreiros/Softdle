@@ -44,13 +44,13 @@ axios.interceptors.response.use(async resp => resp, async error => {
 
                 return axios(error.config)
             }
-
+            window.location.href = '/'
             return Promise.reject(error);
 
         })
 
     }
-
+    window.location.href = '/'
     return Promise.reject(error);
 })
 
